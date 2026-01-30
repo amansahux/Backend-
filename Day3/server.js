@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express(); //serve instaance created
-app.use(express.json()); // it works a middleware that allow to read request.body for express
+app.use(express.json()); // it works like  a middleware that allow to read request.body for express
 const notes = []; // blank array that contains requset.body
 
 app.post("/notes", (req, res) => {

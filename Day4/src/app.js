@@ -24,7 +24,7 @@ app.delete("/notes/:index", (req, res) => {
   res.send("Notes deleted successfully");
 });
 
-// for undating description of particular note
+// for ubdating description of particular note
 app.patch("/notes/:index", (req, res) => {
   notes[req.params.index].description = req.body.description;
   res.send("Description ubdated successfully")

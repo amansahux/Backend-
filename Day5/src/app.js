@@ -29,7 +29,14 @@ app.delete("/notes/:index", (req, res) => {
 });
 
 app.patch("/notes/:index", (req, res) => {
-  notes[req.params.index].description = req.body.description;
+  const index = req.params.index;
+
+  if (!notes[index]) {
+    res.status(404).json({
+      message: "Note Not Found",
+    });
+    notes[index].description = req.body.description;
+  }
   //   res.send("description ubdated successfully");
   res.status(200).json({
     message: "description ubdated successfully",
