@@ -1,11 +1,13 @@
 const express = require("express");
 const noteModel = require("./models/note.module");
-const cors = require("cors")
+const cors = require("cors");
+const path = require("path")
+
 
 const app = express();
 app.use(express.json());
-app.use(cors())
-
+app.use(cors());
+app.use(express.static("./public"))
 
 app.post("/api/notes", async (req, res) => {
   try {
@@ -135,5 +137,9 @@ app.put("/api/notes/:id", async (req, res) => {
       error: error.message,
     });
   }
+});
+
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"))
 });
 module.exports = app;
