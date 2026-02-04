@@ -59,6 +59,23 @@ const App = () => {
       setError("Failed to delete note", err.messsage);
     }
   };
+  // HandleUbdate
+  const HandleUbdate = async (id) => {
+    try {
+      const newDesc = prompt("Enter new Description");
+      axios
+        .patch(`${API_URL}/${id}`, {
+          description: newDesc,
+        })
+        .then((res) => {
+          console.log(res);
+          fetchNotes();
+          setSuccess("Note ubdated successfully");
+        });
+    } catch (err) {
+      setError("Failed to Ubdate Not", err.message);
+    }
+  };
 
   useEffect(() => {
     fetchNotes();
@@ -96,6 +113,13 @@ const App = () => {
                 onClick={() => handleDelete(note._id)}
               >
                 ✕
+              </button>
+              <button
+                onClick={() => {
+                  HandleUbdate(note._id);
+                }}
+              >
+                Edit Description
               </button>
             </div>
 
