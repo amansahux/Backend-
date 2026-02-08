@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const cardSchema = new mongoose.Schema(
   {
-    profilePic: { type: String, required: true, unique: true },
+    profilePic: {
+      type: String,
+      required: true,
+      unique: [true, "Profile pic must be unique"],
+    },
     name: { type: String, required: true },
     bio: { type: String, required: true },
   },
