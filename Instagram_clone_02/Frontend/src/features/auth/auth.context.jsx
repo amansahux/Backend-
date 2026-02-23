@@ -15,20 +15,20 @@ export function AuthProvider({ children }) {
       setuser(response.user);
       return response;
     } catch (err) {
-      throw err;
+      console.eror(err);
     } finally {
       setloading(false);
     }
   };
 
-  const handleRegister = async (email, username, password) => {
+  const handleRegister = async (payload) => {
     setloading(true);
     try {
-      const response = await register(email, username, password);
+      const response = await register(payload);
       setuser(response.user);
       return response;
     } catch (err) {
-      throw err;
+      console.error(err);
     } finally {
       setloading(false);
     }

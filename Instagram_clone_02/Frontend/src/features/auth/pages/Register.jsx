@@ -1,6 +1,8 @@
-import axios from "axios";
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+
 // import "../styles/Register.scss";
 
 const Register = () => {
@@ -9,6 +11,10 @@ const Register = () => {
     username: "",
     password: "",
   });
+
+  const { loading, handleRegister } = useAuth();
+
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
 
@@ -57,20 +63,15 @@ const Register = () => {
 
     setErrors({});
 
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/register",
-        formData, // ✅ send formData directly
-        { withCredentials: true },
-      );
-
-      console.log("Register success:", res.data);
-      alert(res.data.message);
-      setFormData({ email: "", username: "", password: "" });
-    } catch (err) {
-      console.log("Register error:", err.response?.data?.message);
-    }
+    handleRegister(formData).then((res) => {
+      console.log(res);
+      navigate("/login");
+    });
   };
+
+  if (loading) {
+    return <h1>Loading....</h1>;
+  }
 
   return (
     <main className="auth">
