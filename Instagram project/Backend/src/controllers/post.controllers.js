@@ -112,8 +112,6 @@ const toggleLikeController = async (req, res) => {
       post: postId,
       user: userId,
     });
-
-    // 🔁 TOGGLE LOGIC
     if (existingLike) {
       await likeModel.deleteOne({
         post: postId,
@@ -142,10 +140,39 @@ const toggleLikeController = async (req, res) => {
     });
   }
 };
+const getFeedController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const posts = await Promise.all(
+      (await postModel.find().populate("user", "-password").lean()).map(
+        async (post) => {
+          const isLiked = await likeModel.findOne({
+            user: userId,
+            post: post._id,
+          });
+          post.isLiked = !!isLiked;
+          return post;
+        },
+      ),
+    );
+
+    res.status(200).json({
+      message: "Posts fetched successfully",
+      posts,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Server error while fetching posts",
+      error: err.message,
+    });
+  }
+};
 
 module.exports = {
   CreatepostController,
   getPostController,
   getPostDetailsController,
   toggleLikeController,
+  getFeedController,
 };

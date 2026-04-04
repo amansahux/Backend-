@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/Login.scss";
+import "../styles/form.scss";
 import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
@@ -56,9 +56,9 @@ const Login = () => {
 
     setErrors({});
 
-    // const payload = useUsername ? { username, password } : { email, password };
+    const payload = useUsername ? { username, password } : { email, password };
 
-    handleLogin(username, password).then((res) => {
+    handleLogin(payload).then((res) => {
       console.log(res);
       navigate("/");
     });

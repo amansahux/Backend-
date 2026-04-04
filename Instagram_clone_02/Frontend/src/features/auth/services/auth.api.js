@@ -12,9 +12,9 @@ export const register = async (payload) => {
     console.log(err);
   }
 };
-export const login = async (username, password) => {
+export const login = async (payload) => {
   try {
-    const response = await API.post("/login", { username, password });
+    const response = await API.post("/login", payload);
     return response.data;
   } catch (err) {
     console.log(err);

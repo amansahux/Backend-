@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const imagekit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 const postModel = require("../models/post.model");
-const likeModel = require("../models/like.model")
+const likeModel = require("../models/like.model");
 
 const Imagekit = new imagekit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -34,13 +34,9 @@ const CreatepostController = async (req, res) => {
     });
   }
 };
-const getPostController = async (req, res) => {
+const getFeedController = async (req, res) => {
   try {
-    const username = req.user?.username;
-
-    const posts = await postModel.find({
-      user: username,
-    });
+    const posts = await postModel.find();
     if (!posts) {
       return res.status(404).json({
         message: "Post not found",
@@ -139,7 +135,7 @@ const ToggleLikeController = async (req, res) => {
 
 module.exports = {
   CreatepostController,
-  getPostController,
+  getFeedController,
   getDetailPostController,
   ToggleLikeController,
 };

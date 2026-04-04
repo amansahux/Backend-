@@ -1,0 +1,114 @@
+.register-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+  font-family: "Poppins", sans-serif;
+}
+
+.glass-card {
+  width: 380px;
+  padding: 2rem;
+  border-radius: 18px;
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .field {
+    position: relative;
+    margin-bottom: 1.8rem;
+
+    input {
+      width: 100%;
+      padding: 12px 10px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #aaa;
+      color: #fff;
+      outline: none;
+
+      &:focus {
+        border-color: #00f2fe;
+      }
+
+      &:focus + label,
+      &:valid + label {
+        top: -10px;
+        font-size: 11px;
+        color: #00f2fe;
+      }
+    }
+
+    label {
+      position: absolute;
+      left: 10px;
+      top: 12px;
+      color: #aaa;
+      transition: 0.3s;
+    }
+
+    .toggle {
+      position: absolute;
+      right: 5px;
+      top: 10px;
+      cursor: pointer;
+    }
+
+    span {
+      font-size: 11px;
+      color: #ff4d4d;
+      position: absolute;
+      bottom: -18px;
+    }
+
+    &.error input {
+      border-color: #ff4d4d;
+    }
+  }
+
+  .strength {
+    font-size: 12px;
+    margin-bottom: 1rem;
+
+    &.weak {
+      color: red;
+    }
+    &.medium {
+      color: orange;
+    }
+    &.strong {
+      color: #00ffcc;
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .footer-text {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+  }
+}

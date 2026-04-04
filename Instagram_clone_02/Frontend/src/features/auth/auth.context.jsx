@@ -8,10 +8,10 @@ export function AuthProvider({ children }) {
   const [user, setuser] = useState(null);
   const [loading, setloading] = useState(false);
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (payload) => {
     setloading(true);
     try {
-      const response = await login(username, password);
+      const response = await login(payload);
       setuser(response.user);
       return response;
     } catch (err) {

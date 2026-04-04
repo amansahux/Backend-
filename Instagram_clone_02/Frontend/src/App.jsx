@@ -1,11 +1,14 @@
 import React from "react";
 import AppRoutes from "./AppRoutes";
-import "./style.scss";
+import "./features/shared/style.scss";
 import { AuthProvider } from "./features/auth/auth.context.jsx";
+import { PostContextProvider } from "./features/post/PostContext.jsx";
 const App = () => {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <PostContextProvider>
+        <AppRoutes />
+      </PostContextProvider>
     </AuthProvider>
   );
 };

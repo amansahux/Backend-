@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   CreatepostController,
-  getPostController,
+  getFeedController,
   getDetailPostController,
   ToggleLikeController,
 } = require("../controllers/post.controller");
@@ -13,6 +13,6 @@ const postRouter = express.Router();
 
 postRouter.post("/", upload.single("image"), verifyUser, CreatepostController);
 postRouter.get("/like/:postId", verifyUser, ToggleLikeController);
-postRouter.get("/", verifyUser, getPostController);
+postRouter.get("/feed", verifyUser, getFeedController);
 postRouter.get("/details/:postId", verifyUser, getDetailPostController);
 module.exports = postRouter;

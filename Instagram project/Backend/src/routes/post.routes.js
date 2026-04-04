@@ -4,6 +4,7 @@ const {
   getPostController,
   getPostDetailsController,
   toggleLikeController,
+  getFeedController,
 } = require("../controllers/post.controllers");
 const postRouter = express.Router();
 const identifyUser = require("../middlewares/auth.middleware");
@@ -39,6 +40,13 @@ postRouter.get("/details/:postId", identifyUser, getPostDetailsController);
  * @route POST /api/posts/like/:postid
  * @description like a post with the id provided in the request params.
  */
-
 postRouter.post("/like/:postId", identifyUser, toggleLikeController);
+
+/**
+ * @route GET /api/posts/feed
+ * @description get all the post created in the DB
+ * @access private
+ */
+
+postRouter.get("/feed", identifyUser, getFeedController);
 module.exports = postRouter;
