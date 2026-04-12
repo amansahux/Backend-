@@ -1,45 +1,77 @@
 const id3 = require("node-id3");
-const uploadFile = require("../services/storage.service");
 const songModel = require("../models/Song.model");
+const { uploadFile } = require("../services/storage.service");
+
 const createSongController = async (req, res) => {
   try {
-   if (!req.file) {
+    if (!req.file) {
       return res.status(400).json({
         message: "No file uploaded",
       });
     }
+
+    if (!req.file.mimetype.startsWith("audio/")) {
+      return res.status(400).json({
+        message: "Only audio files are allowed",
+      });
+    }
+
     const songBuffer = req.file.buffer;
-    const { mood } = req.body;
+    const mood = "happy";
+
+    if (!mood) {
+      return res.status(400).json({
+        message: "Mood is required",
+      });
+    }
 
     const tags = id3.read(songBuffer);
-    //   console.log(mood)
-    //   console.log(tags.title);
-    const uploadSong = await uploadFile({
+
+    // ✅ FIXED
+    const title = tags.title || `song_${Date.now()}`;
+    // console.log("title-->", title);
+
+    // Upload song
+    const uploadSongPromise = uploadFile({
       buffer: songBuffer,
-      fileName: tags.title + ".mp3",
+      fileName: `${title}.mp3`, // ✅ FIXED
       folder: "/cohort2/moodify/songs",
     });
-    const uploadPoster = await uploadFile({
-      buffer: tags.image.imageBuffer,
-      fileName: tags.title + ".jpeg",
-      folder: "/cohort2/moodify/poster",
-    });
+
+    let uploadPosterPromise = null;
+
+    if (tags.image && tags.image.imageBuffer) {
+      uploadPosterPromise = uploadFile({
+        buffer: tags.image.imageBuffer,
+        fileName: `${title}.jpeg`, // ✅ FIXED
+        folder: "/cohort2/moodify/poster",
+      });
+    }
+
+    const uploadSong = await uploadSongPromise;
+    const uploadPoster = uploadPosterPromise
+      ? await uploadPosterPromise
+      : null;
+
     const Song = await songModel.create({
       url: uploadSong.url,
-      posterUrl: uploadPoster.url,
-      title: tags.title,
+      posterUrl: uploadPoster ? uploadPoster.url : null,
+      title: title,
       mood: mood,
     });
+
     res.status(201).json({
       message: "Song Uploaded successfully",
       Song,
     });
+
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       message: "Something went wrong",
       error: error.message,
     });
   }
-  // console.log(songUrl)
 };
+
 module.exports = { createSongController };
