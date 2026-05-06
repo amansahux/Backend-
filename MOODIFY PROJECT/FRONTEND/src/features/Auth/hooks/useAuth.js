@@ -30,11 +30,15 @@ const useAuth = () => {
   };
 
   const handleGetMe = async () => {
-    setLoading(true);
+  try {
+      setLoading(true);
     const res = await getMe();
     setUser(res.user);
     setLoading(false);
     return res;
+  } catch (error) {
+    console.error(error)
+  }
   };
 
   const handleLogout = async () => {

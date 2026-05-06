@@ -17,7 +17,8 @@ const createSongController = async (req, res) => {
     }
 
     const songBuffer = req.file.buffer;
-    const mood = "happy";
+    const { mood } = req.body;
+    // const mood = "happy";
 
     if (!mood) {
       return res.status(400).json({
@@ -49,9 +50,7 @@ const createSongController = async (req, res) => {
     }
 
     const uploadSong = await uploadSongPromise;
-    const uploadPoster = uploadPosterPromise
-      ? await uploadPosterPromise
-      : null;
+    const uploadPoster = uploadPosterPromise ? await uploadPosterPromise : null;
 
     const Song = await songModel.create({
       url: uploadSong.url,
@@ -64,7 +63,23 @@ const createSongController = async (req, res) => {
       message: "Song Uploaded successfully",
       Song,
     });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+const getSongController = async (req, res) => {
+  const { mood } = req.query;
 
+  try {
+    let songs;
+    if (mood) {
+      songs = await songModel.find({ mood });
+    }
+    res.status(200).json({ message: "Songs fetched successfully", songs });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -74,4 +89,4 @@ const createSongController = async (req, res) => {
   }
 };
 
-module.exports = { createSongController };
+module.exports = { createSongController, getSongController };
